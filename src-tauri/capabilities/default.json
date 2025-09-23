@@ -4,7 +4,10 @@
   "description": "Capability for the main window",
   "windows": ["main"],
   "permissions": [
+    "core:app:allow-default-window-icon",
     "core:default",
+    "core:menu:default",
+    "core:tray:default",
     "opener:default"
   ]
 }
