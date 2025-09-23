@@ -75,5 +75,8 @@ export default defineConfig({
     command: 'pnpm run dev',
     url: 'http://localhost:1420',
     reuseExistingServer: !process.env.CI,
+    env: {
+      VITE_PLAYWRIGHT: "true",
+    }
   },
 });

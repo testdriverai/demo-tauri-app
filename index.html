@@ -9,6 +9,13 @@
 
   <body>
     <div id="root"></div>
+    <script type="module">
+      // This is set in playwright.config.ts to allow our tests to mock Tauri IPC `invoke` calls
+      if (import.meta.env.VITE_PLAYWRIGHT) {
+        const { mockIPC } = await import("@tauri-apps/api/mocks");
+        window.mockIPC = mockIPC;
+      }
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
