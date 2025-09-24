@@ -19,6 +19,8 @@ jobs:
       run: pnpm exec playwright install --with-deps
     - name: Run Playwright tests
       run: pnpm exec playwright test
+      env:
+        TD_API_KEY: ${{ secrets.TD_API_KEY }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
