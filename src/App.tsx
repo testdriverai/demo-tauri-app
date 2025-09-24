@@ -1,7 +1,26 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
+import { defaultWindowIcon } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
+import { Menu, type MenuOptions } from "@tauri-apps/api/menu";
+import { TrayIcon } from "@tauri-apps/api/tray";
+import { useEffect, useState } from "react";
+
 import "./App.css";
+import reactLogo from "./assets/react.svg";
+
+let tray: TrayIcon;
+
+async function setupTray(options: MenuOptions) {
+  const menu = await Menu.new(options);
+
+  if (!tray) {
+    tray = await TrayIcon.new({
+      icon: (await defaultWindowIcon()) ?? "",
+      menuOnLeftClick: true,
+    });
+  }
+
+  tray.setMenu(menu);
+}
 
 function App() {
   const [greetMsg, setGreetMsg] = useState("");
@@ -11,6 +30,22 @@ function App() {
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     setGreetMsg(await invoke("greet", { name }));
   }
+
+  useEffect(() => { 
+    setupTray({
+      items: [
+        {
+          id: "greet",
+          text: "Greet",
+          action: async () => {
+            setGreetMsg(await invoke("greet", { name: "Menu" }));
+          },
+        },
+
+        { id: "quit", text: "Quit", accelerator: "CmdOrCtrl+Q" },
+      ],
+    });
+ }, []);
 
   return (
     <main className="container">
