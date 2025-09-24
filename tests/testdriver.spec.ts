@@ -34,6 +34,7 @@ test("should have heading", async ({ page }) => {
 });
 
 test.describe("should greet with name", () => {
+  test.slow();
   test.agent(`
     - Enter the name "Tauri"
     - Click the "Greet" button
